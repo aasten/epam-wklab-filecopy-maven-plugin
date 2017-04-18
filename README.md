@@ -22,7 +22,7 @@ mvn install
 ```
 for this cloned repository. 
 
-Next, use linked repository https://github.com/aasten/epam-wklab-test-filecopy-plugin to check the plugin. Run
+Next, to check the plugin, one may use repository https://github.com/aasten/epam-wklab-test-filecopy-plugin to clone it and run there
 ```
 mvn filecopy:filecopy
 ```
