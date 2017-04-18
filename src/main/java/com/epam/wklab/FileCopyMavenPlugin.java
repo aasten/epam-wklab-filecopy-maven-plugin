@@ -19,11 +19,11 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  */
 @Mojo( name = "filecopy")
 public class FileCopyMavenPlugin extends AbstractMojo {
-    @Parameter(property = "src", defaultValue = "./input/my.properties")
-    private String sourceFileName;
-    @Parameter(property = "dst", defaultValue = "./output/my_new.properties")
-    private String destinationFileName;
-    @Parameter(property = "overwrite", defaultValue = "true")
+    @Parameter(defaultValue = "./input/my.properties")
+    private String src;
+    @Parameter(defaultValue = "./output/my_new.properties")
+    private String dst;
+    @Parameter(defaultValue = "true")
     private boolean overwrite;
 
     private Path srcPath;
@@ -31,8 +31,8 @@ public class FileCopyMavenPlugin extends AbstractMojo {
 
 
     public void execute() throws MojoExecutionException {
-        srcPath = Paths.get(sourceFileName);
-        dstPath = Paths.get(destinationFileName);
+        srcPath = Paths.get(src);
+        dstPath = Paths.get(dst);
         try {
             if(overwrite) {
                 copyOverwrite();
