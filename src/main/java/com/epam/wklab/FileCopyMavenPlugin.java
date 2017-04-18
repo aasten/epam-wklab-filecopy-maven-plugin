@@ -1,5 +1,6 @@
 package com.epam.wklab;
 
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -17,7 +18,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * Copying file from source to destination
  */
 @Mojo( name = "filecopy")
-public class FileCopyMavenPlugin {
+public class FileCopyMavenPlugin extends AbstractMojo {
     @Parameter(property = "src", defaultValue = "./input/my.properties")
     private String sourceFileName;
     @Parameter(property = "dst", defaultValue = "./output/my_new.properties")
