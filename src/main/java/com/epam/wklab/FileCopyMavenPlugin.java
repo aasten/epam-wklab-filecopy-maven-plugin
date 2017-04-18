@@ -4,8 +4,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -21,7 +25,13 @@ public class FileCopyMavenPlugin {
     @Parameter(property = "overwrite", defaultValue = "true")
     private boolean overwrite;
 
+    private Path srcPath;
+    private Path dstPath;
+
+
     public void execute() throws MojoExecutionException {
+        srcPath = Paths.get(sourceFileName);
+        dstPath = Paths.get(destinationFileName);
         try {
             if(overwrite) {
                 copyOverwrite();
@@ -30,16 +40,18 @@ public class FileCopyMavenPlugin {
             }
         } catch(SecurityException e) {
             throw new MojoExecutionException("Access rigths problems: " + e);
+        } catch(IOException e) {
+            throw new MojoExecutionException("I/O error occurs: " + e);
         }
     }
 
-    private void copyOverwrite() throws SecurityException {
-        Files.copy(sourceFileName, destinationFileName, COPY_ATTRIBUTES, REPLACE_EXISTING);
+    private void copyOverwrite() throws SecurityException, IOException {
+        Files.copy(srcPath, dstPath, COPY_ATTRIBUTES, REPLACE_EXISTING);
     }
 
-    private void copyNoOverwrite() throws MojoExecutionException, SecurityException {
+    private void copyNoOverwrite() throws MojoExecutionException, SecurityException, IOException {
         try {
-            Files.copy(sourceFileName, destinationFileName, COPY_ATTRIBUTES);
+            Files.copy(srcPath, dstPath, COPY_ATTRIBUTES);
         } catch(FileAlreadyExistsException e) {
             throw new MojoExecutionException("Destination file already exists: " + e);
         }
